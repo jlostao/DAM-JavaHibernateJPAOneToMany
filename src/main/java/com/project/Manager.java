@@ -35,41 +35,41 @@ public class Manager {
     public static void close () {
         factory.close();
     }
-  
-    public static Cart addCart(String type){
+
+    public static Ciutat addCiutat(String nom, String pais, int codiPostal) {
         Session session = factory.openSession();
         Transaction tx = null;
-        Cart result = null;
+        Ciutat result = null;
         try {
             tx = session.beginTransaction();
-            result = new Cart(type);
-            session.save(result); 
+            result = new Ciutat(nom, pais, codiPostal);
+            session.save(result);
             tx.commit();
         } catch (HibernateException e) {
-            if (tx!=null) tx.rollback();
-            e.printStackTrace(); 
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
             result = null;
         } finally {
-            session.close(); 
+            session.close();
         }
         return result;
     }
 
-    public static Item addItem(String name){
+    public static Ciutada addCiutada(long ciutatId, String nom, String cognom, int edat) {
         Session session = factory.openSession();
         Transaction tx = null;
-        Item result = null;
+        Ciutada result = null;
         try {
             tx = session.beginTransaction();
-            result = new Item(name);
-            session.save(result); 
+            result = new Ciutada(ciutatId, nom, cognom, edat);
+            session.save(result);
             tx.commit();
         } catch (HibernateException e) {
-            if (tx!=null) tx.rollback();
-            e.printStackTrace(); 
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
             result = null;
         } finally {
-            session.close(); 
+            session.close();
         }
         return result;
     }
@@ -91,38 +91,42 @@ public class Manager {
         return obj;
     }
 
-    public static void updateItem(long itemId, String name){
+    public static void updateCiutada(long ciutadaId, long ciutatId, String nom, String cognom, int edat) {
         Session session = factory.openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            Item obj = (Item) session.get(Item.class, itemId); 
-            obj.setName(name);
-            session.update(obj); 
+            Ciutada obj = (Ciutada) session.get(Ciutada.class, ciutadaId);
+            obj.setCiutatId(ciutatId);
+            obj.setNom(nom);
+            obj.setCognom(cognom);
+            obj.setEdat(edat);
+            session.update(obj);
             tx.commit();
         } catch (HibernateException e) {
-            if (tx!=null) tx.rollback();
-            e.printStackTrace(); 
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
         } finally {
-            session.close(); 
+            session.close();
         }
     }
     
-    public static void updateCart(long cartId, String type, Set<Item> items){
+    public static void updateCiutat(long ciutatId, String nom, String pais, int codiPostal, Set<Ciutada> ciutadans) {
         Session session = factory.openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            Cart obj = (Cart) session.get(Cart.class, cartId); 
-            obj.setType(type);
-            obj.setItems(items);
-            session.update(obj); 
+            Ciutat obj = (Ciutat) session.get(Ciutat.class, ciutatId);
+            obj.setNom(nom);
+            obj.setPais(pais);
+            obj.setCodiPostal(codiPostal);
+            session.update(obj);
             tx.commit();
         } catch (HibernateException e) {
-            if (tx!=null) tx.rollback();
-            e.printStackTrace(); 
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
         } finally {
-            session.close(); 
+            session.close();
         }
     }
   
